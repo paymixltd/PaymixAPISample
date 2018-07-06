@@ -32,7 +32,7 @@ namespace AuthorizationCodeGrant.Controllers
 
             if (!string.IsNullOrEmpty(Request.Form.Get("submit.Authorize")))
             {
-                var userAuthorization = _webServerClient.PrepareRequestUserAuthorization(new[] { "bio", "notes" });
+                var userAuthorization = _webServerClient.PrepareRequestUserAuthorization(new[] {"USER_FINANCIAL" });
                 userAuthorization.Send(HttpContext);
                 Response.End();
             }
@@ -53,9 +53,18 @@ namespace AuthorizationCodeGrant.Controllers
             {
                 var resourceServerUri = new Uri(Paths.ResourceServerBaseAddress);
                 var client = new HttpClient(_webServerClient.CreateAuthorizingHandler(accessToken));
-                var body = client.GetStringAsync(new Uri(resourceServerUri, Paths.MePath)).Result;
+                var body = client.GetStringAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Account")).Result;
                 ViewBag.ApiResponse = body;
             }
+
+            else if (!string.IsNullOrEmpty(Request.Form.Get("submit.PMXGetProfile")))
+            {
+                var resourceServerUri = new Uri(Paths.ResourceServerBaseAddress);
+                var client = new HttpClient(_webServerClient.CreateAuthorizingHandler(accessToken));
+                var body = client.GetStringAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Profile")).Result;
+                ViewBag.ApiResponse = body;
+            }
+
 
             return View();
         }

@@ -5,8 +5,8 @@
     <title>Authorization Code Grant Client</title>
 </head>
 <body style="background-color:azure">
-    <h1>Authorization Code Grant Client</h1>
-    <h2>Client Application</h2>
+    <h1>Paymix Customer E-Commerce Site</h1>
+    
     <form id="form1" action="@ViewBag.Action" method="POST">
         <div>
             Access Token<br />
@@ -19,7 +19,9 @@
             <input id="Refresh" name="submit.Refresh" value="Refresh" type="submit" />
             <br />
             <br />
-            <input id="CallApi" name="submit.CallApi" value="Access Protected Resource API" type="submit" />
+            <input id="CallApi" name="submit.CallApi" value="Get Paymix Account" type="submit" />
+
+            <input id="PMXGetProfile" name="submit.PMXGetProfile" value="whoami" type="submit" />
         </div>
         <div>
             @ViewBag.ApiResponse
