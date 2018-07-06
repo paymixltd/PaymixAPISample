@@ -11,12 +11,12 @@ namespace Constants
         /// <summary>
         /// AuthorizationServer project should run on this URL
         /// </summary>
-        public const string AuthorizationServerBaseAddress = "http://neropaytest.paymix.eu:8001";
+        public const string AuthorizationServerBaseAddress = "http://neropaytest.paymix.eu:8182";
 
         /// <summary>
         /// ResourceServer project should run on this URL
         /// </summary>
-        public const string ResourceServerBaseAddress = "http://neropaytest.paymix.eu:8001";
+        public const string ResourceServerBaseAddress = "http://neropaytest.paymix.eu:8182";
         /// <summary>
         /// ImplicitGrant project should be running on this specific port '38515'
         /// </summary>
