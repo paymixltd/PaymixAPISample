@@ -1,4 +1,4 @@
-﻿using Constants;
+﻿using PaymixSDK;
 using DotNetOpenAuth.OAuth2;
 using Newtonsoft.Json.Linq;
 using System;
@@ -36,6 +36,8 @@ namespace ResourceOwnerPasswordCredentialGrant
             //Signup();
 
 
+            NewUserMobile();
+
             // var c = await UpgradeCDD(); OTP ISSUE -- BROKEN 
 
             //var c = await EWalletTransfer();
@@ -49,13 +51,41 @@ namespace ResourceOwnerPasswordCredentialGrant
             // var x = await EWalletTransfer("savasmanyasli@mailinator.com",100); -- BROKEN
 
             // var m = await SendFundsToMerchant("NRP", 10); -- BROKEN
-            var t = await GetUserProfile();
+            //var t = await GetUserProfile();
 
-            var s = await SetUserProfile(t);  // 
+            //var s = await SetUserProfile(t);  // 
 
             //s = await GetUserProfile();
 
             var d = await GetDocuments();
+
+            var x = await GetMetadata();
+
+        }
+
+        private static void NewUserMobile()
+        {
+            Signup();
+            
+        }
+
+        private static async Task<JObject> GetMetadata()
+        {
+            var client = new HttpClient(_webServerClient.CreateAuthorizingHandler(_accessToken));
+            client.DefaultRequestHeaders.Accept
+            .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            try
+            {
+                var response = await client.GetAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Metadata?name=documentType&lang=en"));
+                var contents = await response.Content.ReadAsStringAsync();
+                var retVal = JObject.Parse(contents);
+                return retVal;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
 
         }
 
@@ -230,8 +260,6 @@ namespace ResourceOwnerPasswordCredentialGrant
 
             HttpContent myContent = new StringContent(content.ToString(), Encoding.UTF8,
                                     "application/json");
-
-
             try
             {
                 var response = await client.PostAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Transfer/Merchant"), myContent);
@@ -284,7 +312,7 @@ namespace ResourceOwnerPasswordCredentialGrant
 
         private static void RequestToken()
         {
-            var state = _webServerClient.ExchangeUserCredentialForToken("savasmanyasli@mailinator.com", "12345Ankara!", scopes: new string[] { "USER_COMPLIANCE" , "USER_FINANCIAL" , "USER_REGISTRATION"  });
+            var state = _webServerClient.ExchangeUserCredentialForToken("savasmanyasli@mailinator.com", "12345Ankara!", scopes: new string[] { "USER_COMPLIANCE" , "USER_FINANCIAL" , "USER_REGISTRATION" , "PUBLIC_DATA" });
             
             _accessToken = state.AccessToken;
         }
@@ -322,28 +350,7 @@ namespace ResourceOwnerPasswordCredentialGrant
             address.country = addressCountry;
 
             content.consumerResidentialAddress = address;
-        
-            /*
-        {
-	            "password" : "Ay@7aga123",
-	            "repeatPassword" : "Ay@7aga123" ,
-	            "consumer" : {
-		            "name" :"mohamed" ,
-		            "surname" : "Zayan",
-		            "mobilePrefix": {
-			            "countryIso": "MLT",
-			            "prefix" : "356"
-		            },
-		            "mobileNumber" : "99070071",
-		            "email" : "ay_7aga@mailinator.com" 
-	             },
-	             "consumerResidentialAddress" : {
-	 	            "country" : {
-	 		            "isoAlpha3" : "MLT"
-	 	            }
-	             }
-            }
-*/
+   
             HttpContent myContent = new StringContent(content.ToString() , Encoding.UTF8,
                                     "application/json");
             HttpRequestMessage request = new HttpRequestMessage() { Content = myContent  };

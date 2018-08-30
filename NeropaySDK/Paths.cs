@@ -4,27 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Constants
+namespace PaymixSDK
 {
     public static class Paths
     {
         /// <summary>
-        /// AuthorizationServer project should run on this URL
+        /// Paymix AuthorizationServer 
         /// </summary>
         public const string AuthorizationServerBaseAddress = "http://pimgold.pminteg.eu:8182/";
 
         
         /// <summary>
-        /// ResourceServer project should run on this URL
+        /// Paymix ResourceServer 
         /// </summary>
         public const string ResourceServerBaseAddress = "http://pimgold.pminteg.eu:8182/";
+        
         /// <summary>
-        /// ImplicitGrant project should be running on this specific port '38515'
-        /// </summary>
-        public const string ImplicitGrantCallBackPath = "http://localhost:38515/Home/SignIn";
-
-        /// <summary>
-        /// AuthorizationCodeGrant project should be running on this URL.
+        /// Your Merchant Web app should be running at this URL
         /// </summary>
         public const string AuthorizeCodeCallBackPath = "http://localhost:38500/";
 

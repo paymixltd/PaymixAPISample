@@ -5,26 +5,39 @@
     <title>Authorization Code Grant Client</title>
 </head>
 <body style="background-color:azure">
-    <h1>Paymix Customer E-Commerce Site</h1>
     
+
+
     <form id="form1" action="@ViewBag.Action" method="POST">
         <div>
-            Access Token<br />
-            <input id="AccessToken" name="AccessToken" width="604" type="text" value="@ViewBag.AccessToken" />
-            <input id="Authorize" name="submit.Authorize" value="Authorize" type="submit" />
-            <br />
-            <br />
-            Refresh Tokensh Token<br />
-            <input id="RefreshToken" name="RefreshToken" width="604" type="text" value="@ViewBag.RefreshToken" />
-            <input id="Refresh" name="submit.Refresh" value="Refresh" type="submit" />
-            <br />
-            <br />
-            <input id="CallApi" name="submit.CallApi" value="Get Paymix Account" type="submit" />
-
-            <input id="PMXGetProfile" name="submit.PMXGetProfile" value="whoami" type="submit" />
+            <strong>Access Token</strong><br />
+            <div>@Session["neropay_access_token"]'  </div>
+            
         </div>
         <div>
-            @ViewBag.ApiResponse
+
+            @if (ViewBag.AccountList!=null)
+            {
+                <select asp-for="FlightDestID">
+
+                    @foreach (var account in (List<PaymixSDK.Account>)ViewBag.AccountList)
+                {
+                        <option value="@account.accountNumber" label="@account.accountNumber - @account.currencyCode  "></option>
+                    }
+                </select>
+
+                <table>
+                    <tr><td>email</td><td>@ViewBag.Profile.email</td></tr>
+                    <tr><td>logged in user</td><td>@ViewBag.Profile.name @ViewBag.Profile.surname</td></tr>
+                    <tr><td>mobile</td><td>@ViewBag.Profile.mobilePrefix @ViewBag.Profile.mobile</td></tr>
+                </table>
+
+            }
+          
+           
+        </div>
+        <div>
+            @ViewBag.account
         </div>
     </form>
 </body>

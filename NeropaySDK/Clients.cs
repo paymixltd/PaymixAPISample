@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Constants
+namespace PaymixSDK
 {
     public static class Clients
     {
@@ -15,12 +15,7 @@ namespace Constants
             RedirectUrl = Paths.AuthorizeCodeCallBackPath
         };
 
-        public readonly static Client Client2 = new Client
-        {
-            Id = "meta",
-            Secret = "meta",
-            RedirectUrl = Paths.ImplicitGrantCallBackPath
-        };
+        
     }
 
     public class Client

@@ -1,4 +1,4 @@
-﻿using Constants;
+﻿using PaymixSDK;
 using DotNetOpenAuth.OAuth2;
 using System;
 using System.Collections.Generic;
@@ -35,12 +35,12 @@ namespace ClientCredentialGrant
                 AuthorizationEndpoint = new Uri(authorizationServerUri, Paths.AuthorizePath),
                 TokenEndpoint = new Uri(authorizationServerUri, Paths.TokenPath)
             };
-            _webServerClient = new WebServerClient(authorizationServer, Clients.Client1.Id, Clients.Client1.Secret);
+            _webServerClient = new WebServerClient(authorizationServer, "", "");
         }
 
         private static void RequestToken()
         {
-            var state = _webServerClient.GetClientAccessToken(new[] { "bio", "notes" });
+            var state = _webServerClient.GetClientAccessToken(new[] { "TRUSTED"});
             _accessToken = state.AccessToken;
         }
 
@@ -48,8 +48,15 @@ namespace ClientCredentialGrant
         {
             var resourceServerUri = new Uri(Paths.ResourceServerBaseAddress);
             var client = new HttpClient(_webServerClient.CreateAuthorizingHandler(_accessToken));
-            var body = client.GetStringAsync(new Uri(resourceServerUri, Paths.MePath)).Result;
-            Console.WriteLine(body);
+            HttpContent myContent = new StringContent("", Encoding.UTF8,
+                                   "application/json");
+            //Uri(resourceServerUri, "/PaymixWS_Resource/Cobrander/Customer/Application")
+
+            var response = client.PostAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Cobrander/Customer/Application"), myContent);
+            var contents = response.Result.Content.ReadAsStringAsync();
+            //var retVal = JObject.Parse(contents);
+            
+            //Console.WriteLine(body);
         }
     }
 }
