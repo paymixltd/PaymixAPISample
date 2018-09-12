@@ -11,14 +11,15 @@ namespace PaymixSDK
         /// <summary>
         /// Paymix AuthorizationServer 
         /// </summary>
-        public const string AuthorizationServerBaseAddress = "http://pimgold.pminteg.eu:8182/";
+        public const string AuthorizationServerBaseAddress = "http://test.paymix.eu:8182/";
 
-        
+
         /// <summary>
         /// Paymix ResourceServer 
         /// </summary>
-        public const string ResourceServerBaseAddress = "http://pimgold.pminteg.eu:8182/";
         
+        public const string ResourceServerBaseAddress = "http://test.paymix.eu:8182/";
+
         /// <summary>
         /// Your Merchant Web app should be running at this URL
         /// </summary>

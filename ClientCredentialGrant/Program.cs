@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace ClientCredentialGrant
 {
@@ -29,13 +31,13 @@ namespace ClientCredentialGrant
 
         private static void InitializeWebServerClient()
         {
-            var authorizationServerUri = new Uri(Paths.AuthorizationServerBaseAddress);
+             var authorizationServerUri = new Uri(Paths.AuthorizationServerBaseAddress);
             var authorizationServer = new AuthorizationServerDescription
             {
                 AuthorizationEndpoint = new Uri(authorizationServerUri, Paths.AuthorizePath),
                 TokenEndpoint = new Uri(authorizationServerUri, Paths.TokenPath)
             };
-            _webServerClient = new WebServerClient(authorizationServer, "", "");
+            _webServerClient = new WebServerClient(authorizationServer, "INNOVERTU", "sRXRYaybQGtUpQ9W");
         }
 
         private static void RequestToken()
@@ -48,15 +50,22 @@ namespace ClientCredentialGrant
         {
             var resourceServerUri = new Uri(Paths.ResourceServerBaseAddress);
             var client = new HttpClient(_webServerClient.CreateAuthorizingHandler(_accessToken));
-            HttpContent myContent = new StringContent("", Encoding.UTF8,
-                                   "application/json");
+            
             //Uri(resourceServerUri, "/PaymixWS_Resource/Cobrander/Customer/Application")
 
-            var response = client.PostAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Cobrander/Customer/Application"), myContent);
-            var contents = response.Result.Content.ReadAsStringAsync();
+            using (StreamReader file = File.OpenText(@"C:\Users\sm\Desktop\APPMESSAGE.JSON"))
+            {
+                string jsonApplication = file.ReadToEnd();
+                HttpContent myContent = new StringContent(jsonApplication, Encoding.UTF8,
+                                   "application/json");
+                var response = client.PostAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Cobrander/Customer/Application"), myContent);
+                var contents = response.Result.Content.ReadAsStringAsync();
+            }
+
+            
             //var retVal = JObject.Parse(contents);
             
             //Console.WriteLine(body);
-        }
+         }
     }
 }
