@@ -27,12 +27,12 @@ namespace AuthorizationCodeGrant.Controllers
                 var amount = Decimal.Parse(sendAmount).ToString("N2") ;
                 
                 // SAMPLE CALL THAT SENDS MONEY TO MERCHANT
-                var result = await Service.PaymixResourceService.SendFundsToMerchant("MER_PIM", amount, "EUR",
+                var result = await Service.PaymixResourceService.SendFundsToMerchant("ZTP_MER", amount, "EUR",
                     Session["neropay_access_token"].ToString()
                     , new HttpClient(PaymixAuthService.GetClient().CreateAuthorizingHandler(Session["neropay_access_token"].ToString())));
-
+                
                 var profileData = ((JArray)JObject.Parse(result)["responseBody"])[0];
-                ViewBag.Profile = profileData.ToObject<Profile>();
+                //ViewBag.Profile = profileData.ToObject<Profile>();
                 // Load Dashboard
                 /*;
                 ViewBag.ApiResponse = body;

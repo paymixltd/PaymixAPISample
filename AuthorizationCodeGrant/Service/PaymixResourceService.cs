@@ -46,14 +46,14 @@ namespace AuthorizationCodeGrant.Service
             content.amount = Amount;
             content.currency = Currency;
             content.description = "TEST TRANSACTION";
-            content.merchantTransactionId = "123412512";
+            content.merchantTransactionId = Guid.NewGuid().ToString() ;
 
 
             HttpContent myContent = new StringContent(content.ToString(), Encoding.UTF8,
                                     "application/json");
             try
             {
-                var response = await authorizedClient.PostAsync(new Uri(PaymixSDK.Paths.ResourceServerBaseAddress + "/PaymixWS_Resource/Members/Transfer/Merchant"), myContent);
+                var response = await authorizedClient.PostAsync(new Uri(PaymixSDK.Paths.ResourceServerBaseAddress + "/PagatudoAPI/Members/Transfer/Merchant"), myContent);
                 var contents = await response.Content.ReadAsStringAsync();
                 // ISSUE : ASKING FOR OTP                          
                 return contents;

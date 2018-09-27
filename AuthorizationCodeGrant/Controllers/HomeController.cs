@@ -22,7 +22,7 @@ namespace AuthorizationCodeGrant.Controllers
 
                 // SAMPLE CALL THAT GETS OPEN EWALLETS
                 var client = new HttpClient(PaymixAuthService.GetClient().CreateAuthorizingHandler(Session["neropay_access_token"].ToString()));
-                var result = await client.GetStringAsync(new Uri(PaymixAuthService.URL + "/PaymixWS_Resource/Members/Account"));
+                var result = await client.GetStringAsync(new Uri(PaymixAuthService.URL + "/PagatudoAPI/Members/Account"));
                 JObject jsonAccount = JObject.Parse(result);
                 var accountlist = (JArray)(jsonAccount["responseBody"]);
                 ViewBag.AccountList = accountlist.ToObject<List<Account>>();
@@ -30,7 +30,7 @@ namespace AuthorizationCodeGrant.Controllers
 
 
                 // SAMPLE CALL THAT GETS CUSTOMER KYC DETAILS
-                result = await client.GetStringAsync(new Uri(PaymixAuthService.URL + "/PaymixWS_Resource/Members/Profile"));
+                result = await client.GetStringAsync(new Uri(PaymixAuthService.URL + "/PagatudoAPI/Members/Profile"));
                 var profileData = ((JArray)JObject.Parse(result)["responseBody"])[0];
                 ViewBag.Profile = profileData.ToObject<Profile>();
                 // Load Dashboard

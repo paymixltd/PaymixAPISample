@@ -77,7 +77,7 @@ namespace ResourceOwnerPasswordCredentialGrant
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             try
             {
-                var response = await client.GetAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Metadata?name=documentType&lang=en"));
+                var response = await client.GetAsync(new Uri(resourceServerUri, "/PagatudoAPI/Members/Metadata?name=documentType&lang=en"));
                 var contents = await response.Content.ReadAsStringAsync();
                 var retVal = JObject.Parse(contents);
                 return retVal;
@@ -151,7 +151,7 @@ namespace ResourceOwnerPasswordCredentialGrant
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             try
             {
-                var response = await client.GetAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Document/Info"));
+                var response = await client.GetAsync(new Uri(resourceServerUri, "/PagatudoAPI/Members/Document/Info"));
                 var contents = await response.Content.ReadAsStringAsync();
                 var retVal = JObject.Parse(contents);
                 return retVal;
@@ -169,17 +169,12 @@ namespace ResourceOwnerPasswordCredentialGrant
             client.DefaultRequestHeaders.Accept
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             dynamic content = new JObject();
-            //content.cid = "NRP";
-            //content.userName = "savasm@gmail.com";
             HttpContent myContent = new StringContent(content.ToString(), Encoding.UTF8,
                                     "application/json");
             try
             {
-                var response = await client.GetAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Account"));
+                var response = await client.GetAsync(new Uri(resourceServerUri, "/PagatudoAPI/Members/Account"));
                 var contents = await response.Content.ReadAsStringAsync();
-
-
-                // ISSUE : ASKING FOR OTP
                 return JObject.Parse(contents);
             }
             catch (Exception ex)
@@ -198,17 +193,12 @@ namespace ResourceOwnerPasswordCredentialGrant
             client.DefaultRequestHeaders.Accept
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             dynamic content = new JObject();
-            //content.cid = "NRP";
-            //content.userName = "savasm@gmail.com";
             HttpContent myContent = new StringContent(content.ToString(), Encoding.UTF8,
                                     "application/json");
             try
             {
-                var response = await client.GetAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Account/Balance?accountNumber=" + AccountNumber));
+                var response = await client.GetAsync(new Uri(resourceServerUri, "/PagatudoAPI/Members/Account/Balance?accountNumber=" + AccountNumber));
                 var contents = await response.Content.ReadAsStringAsync();
-
-
-                // ISSUE : ASKING FOR OTP
                 return JObject.Parse(contents);
             }
             catch (Exception ex)
@@ -225,7 +215,6 @@ namespace ResourceOwnerPasswordCredentialGrant
             client.DefaultRequestHeaders.Accept
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             dynamic content = new JObject();
-            //content.cid = "NRP";
             content.customerUserName = UserName;
             content.amount = Amount;
 
@@ -235,9 +224,8 @@ namespace ResourceOwnerPasswordCredentialGrant
 
             try
             {
-                var response = await client.PostAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Transfer/Ewallet"), myContent);
+                var response = await client.PostAsync(new Uri(resourceServerUri, "/PagatudoAPI/Members/Transfer/Ewallet"), myContent);
                 var contents = await response.Content.ReadAsStringAsync();
-                // ISSUE : ASKING FOR OTP
                 return contents;
             }
             catch (Exception ex)
@@ -255,7 +243,6 @@ namespace ResourceOwnerPasswordCredentialGrant
             client.DefaultRequestHeaders.Accept
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             dynamic content = new JObject();
-            //content.cid = "NRP";
             content.merchantCode = merchantCode;
             content.amount = Amount;
 
@@ -263,9 +250,8 @@ namespace ResourceOwnerPasswordCredentialGrant
                                     "application/json");
             try
             {
-                var response = await client.PostAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Transfer/Merchant"), myContent);
+                var response = await client.PostAsync(new Uri(resourceServerUri, "/PagatudoAPI/Members/Transfer/Merchant"), myContent);
                 var contents = await response.Content.ReadAsStringAsync();
-                // ISSUE : ASKING FOR OTP                          
                 return contents;
             }
             catch (Exception ex)
@@ -282,15 +268,12 @@ namespace ResourceOwnerPasswordCredentialGrant
             client.DefaultRequestHeaders.Accept
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             dynamic content = new JObject();
-            //content.cid = "NRP";
-            //content.userName = "savasm@gmail.com";
             HttpContent myContent = new StringContent(content.ToString(), Encoding.UTF8,
                                     "application/json");
             try
             {
-                var response = await client.PostAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Upgrade"),myContent);
+                var response = await client.PostAsync(new Uri(resourceServerUri, "/PagatudoAPI/Members/Upgrade"),myContent);
                 var contents = await response.Content.ReadAsStringAsync();
-                // ISSUE : ASKING FOR OTP
                 return contents;
             }
             catch (Exception ex)
@@ -313,7 +296,7 @@ namespace ResourceOwnerPasswordCredentialGrant
 
         private static void RequestToken()
         {
-            var state = _webServerClient.ExchangeUserCredentialForToken("savasmanyasli@mailinator.com", "12345Ankara!", scopes: new string[] { "USER_COMPLIANCE" , "USER_FINANCIAL" , "USER_REGISTRATION" , "PUBLIC_DATA" });
+            var state = _webServerClient.ExchangeUserCredentialForToken("savasmanyasli@mailinator.com", "Password!", scopes: new string[] { "USER_COMPLIANCE" , "USER_FINANCIAL" , "USER_REGISTRATION" , "PUBLIC_DATA" });
             
             _accessToken = state.AccessToken;
         }
@@ -325,16 +308,13 @@ namespace ResourceOwnerPasswordCredentialGrant
             client.DefaultRequestHeaders.Accept
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            //var body = client.GetStringAsync(new Uri(resourceServerUri, Paths.MePath)).Result;
-
+            
             dynamic content = new JObject();
             dynamic consumer = new JObject();
             dynamic mobilePrefix = new JObject();
             dynamic address = new JObject();
             dynamic addressCountry = new JObject();
-
-            //content.password = "12345Ankara!";
-            //content.repeatPassword = "12345Ankara!";
+            
             consumer.name = "Savas";
             consumer.surname = "Manyasli";
             consumer.email = "savasmanyasli@mailinator.com";
@@ -356,7 +336,7 @@ namespace ResourceOwnerPasswordCredentialGrant
                                     "application/json");
             HttpRequestMessage request = new HttpRequestMessage() { Content = myContent  };
             request.Method = HttpMethod.Post;
-            request.RequestUri = new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Signup" + "?lang=tr");
+            request.RequestUri = new Uri(resourceServerUri, "/PagatudoAPI/Members/Signup" + "?lang=tr");
             try
             {
                 var result = client.SendAsync(request).Result;
@@ -368,10 +348,7 @@ namespace ResourceOwnerPasswordCredentialGrant
                 
                 throw;
             }
-            //await client.GetAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Signup" + "?lang=tr"));
-
-
-            //Console.WriteLine(body);
+         
         }
 
 
@@ -382,9 +359,6 @@ namespace ResourceOwnerPasswordCredentialGrant
             var client = new HttpClient(_webServerClient.CreateAuthorizingHandler(_accessToken));
             client.DefaultRequestHeaders.Accept
             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //var body = client.GetStringAsync(new Uri(resourceServerUri, Paths.MePath)).Result;
-
             dynamic content = new JObject();
             content.username = "savasmanyasli@mailinator.com";
     
@@ -394,7 +368,7 @@ namespace ResourceOwnerPasswordCredentialGrant
                                     "application/json");
             HttpRequestMessage request = new HttpRequestMessage() { Content = myContent };
             request.Method = HttpMethod.Post;
-            request.RequestUri = new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Password" );
+            request.RequestUri = new Uri(resourceServerUri, "/PagatudoAPI/Members/Password" );
             try
             {
                 var result = client.SendAsync(request).Result;
@@ -406,10 +380,7 @@ namespace ResourceOwnerPasswordCredentialGrant
 
                 throw;
             }
-            //await client.GetAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Signup" + "?lang=tr"));
-
-
-            //Console.WriteLine(body);
+        
         }
 
 
@@ -434,7 +405,7 @@ namespace ResourceOwnerPasswordCredentialGrant
             {
                 throw;
             }
-            //Console.WriteLine(body);
+            
         }
     }
 }
