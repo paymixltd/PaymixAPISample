@@ -27,7 +27,7 @@ namespace AuthorizationCodeGrant.Controllers
                 var amount = Decimal.Parse(sendAmount).ToString("N2") ;
                 
                 // SAMPLE CALL THAT SENDS MONEY TO MERCHANT
-                var result = await Service.PaymixResourceService.SendFundsToMerchant("ZTP_MER", amount, "EUR",
+                var result = await Service.PaymixResourceService.SendFundsToMerchant("MER_ZBP", amount, "EUR",
                     Session["neropay_access_token"].ToString()
                     , new HttpClient(PaymixAuthService.GetClient().CreateAuthorizingHandler(Session["neropay_access_token"].ToString())));
                 

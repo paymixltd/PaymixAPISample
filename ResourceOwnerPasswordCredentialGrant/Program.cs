@@ -31,33 +31,8 @@ namespace ResourceOwnerPasswordCredentialGrant
             RequestToken();
 
             Console.WriteLine("Access Token: {0}", _accessToken);
-
-            //ChangePassword();
-
-            //Signup();
-
-
             NewUserMobile();
-
-            // var c = await UpgradeCDD(); OTP ISSUE -- BROKEN 
-
-            //var c = await EWalletTransfer();
-
              var c = await GetAccountSummary(); //OK
-
-            // var a = await GetAccountBalance("20210100001"); OK
-
-
-
-            // var x = await EWalletTransfer("savasmanyasli@mailinator.com",100); -- BROKEN
-
-            // var m = await SendFundsToMerchant("NRP", 10); -- BROKEN
-            //var t = await GetUserProfile();
-
-            //var s = await SetUserProfile(t);  // 
-
-            //s = await GetUserProfile();
-
             var d = await GetDocuments();
 
             var x = await GetMetadata();

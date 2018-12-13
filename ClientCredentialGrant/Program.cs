@@ -37,7 +37,7 @@ namespace ClientCredentialGrant
                 AuthorizationEndpoint = new Uri(authorizationServerUri, Paths.AuthorizePath),
                 TokenEndpoint = new Uri(authorizationServerUri, Paths.TokenPath)
             };
-            _webServerClient = new WebServerClient(authorizationServer, "clientID", "secret");
+            _webServerClient = new WebServerClient(authorizationServer, "client", "client");
         }
 
         private static void RequestToken()
@@ -53,13 +53,16 @@ namespace ClientCredentialGrant
             
             //Uri(resourceServerUri, "/PagatudoAPI/Cobrander/Customer/Application")
 
-            using (StreamReader file = File.OpenText(@"C:\Users\sm\Desktop\APPMESSAGE.JSON"))
+            using (StreamReader file = File.OpenText(@"C:\Users\sm\Desktop\app.json"))
             {
                 string jsonApplication = file.ReadToEnd();
                 HttpContent myContent = new StringContent(jsonApplication, Encoding.UTF8,
                                    "application/json");
-                var response = client.PostAsync(new Uri(resourceServerUri, "/PagatudoAPI/Cobrander/Customer/Application"), myContent);
+                var response = client.PostAsync(new Uri(resourceServerUri, "/PaymixWS_Resource/Members/Transfer/Merchant"), myContent);
                 var contents = response.Result.Content.ReadAsStringAsync();
+
+
+                
             }
 
             

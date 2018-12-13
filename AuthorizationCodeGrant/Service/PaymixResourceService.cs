@@ -38,24 +38,22 @@ namespace AuthorizationCodeGrant.Service
         public static async Task<string> SendFundsToMerchant(string merchantCode, string Amount , string Currency , string token, HttpClient authorizedClient )
         {
 
-
             authorizedClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             dynamic content = new JObject();
-            //content.cid = "NRP";
             content.merchantCode = merchantCode;
             content.amount = Amount;
             content.currency = Currency;
-            content.description = "TEST TRANSACTION";
-            content.merchantTransactionId = Guid.NewGuid().ToString() ;
+            content.description = "TRANSACTION NARRATIVE FROM MERCHANT SYSTEM";
+            // Always Ensure that this id is globally unique. This is an additional control in order to avoid double spending.
+            content.merchantTransactionId = Guid.NewGuid().ToString() ; 
 
 
             HttpContent myContent = new StringContent(content.ToString(), Encoding.UTF8,
                                     "application/json");
             try
             {
-                var response = await authorizedClient.PostAsync(new Uri(PaymixSDK.Paths.ResourceServerBaseAddress + "/PagatudoAPI/Members/Transfer/Merchant"), myContent);
+                var response = await authorizedClient.PostAsync(new Uri(PaymixSDK.Paths.ResourceServerBaseAddress + "PaymixWS_Resource/Members/Transfer/Merchant"), myContent);
                 var contents = await response.Content.ReadAsStringAsync();
-                // ISSUE : ASKING FOR OTP                          
                 return contents;
             }
             catch (Exception ex)

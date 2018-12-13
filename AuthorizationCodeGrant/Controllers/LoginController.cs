@@ -23,7 +23,7 @@ namespace AuthorizationCodeGrant.Controllers
 
         [HttpPost]
         [ActionName("Index")]
-        public async Task<ActionResult> DoLogin()
+        public ActionResult DoLogin()
         {
             var callbackURL =
                 Url.Action("Process", "Login",
@@ -37,7 +37,7 @@ namespace AuthorizationCodeGrant.Controllers
 
         [HttpGet]
         [ActionName("Process")]
-        public async Task<ActionResult> ProcessLogin()
+        public ActionResult ProcessLogin()
         {
             var accessToken = Request.Form["AccessToken"];
             if (string.IsNullOrEmpty(accessToken))
