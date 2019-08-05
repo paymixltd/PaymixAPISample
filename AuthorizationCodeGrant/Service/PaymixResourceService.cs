@@ -46,16 +46,46 @@ namespace AuthorizationCodeGrant.Service
             content.amount = Amount;
             content.currency = Currency;
             content.description = "Transaction Narrative from Merchant";
-            content.merchantTransactionId = "123412512"; // Make sure this id is  unique to avoid merchant validation exception. This check enforces the customer's duplicate spending.
+            content.merchantTransactionId = Guid.NewGuid().ToString("D"); // Make sure this id is  unique to avoid merchant validation exception. This check enforces the customer's duplicate spending.
 
         
             HttpContent myContent = new StringContent(content.ToString(), Encoding.UTF8,
                                     "application/json");
             try
             {
-                var response = await authorizedClient.PostAsync(new Uri(PaymixSDK.Paths.ResourceServerBaseAddress + "/PaymixWS_Resource/Members/Transfer/Merchant"), myContent);
+                var response = await authorizedClient.PostAsync(new Uri(PaymixSDK.Paths.ResourceServerBaseAddress + "/v2/Members/Transfer/Merchant"), myContent);
                 var contents = await response.Content.ReadAsStringAsync();
+
+                dynamic jsonToken = JObject.Parse(contents);
+                var returnToken = (JArray)(jsonToken["responseBody"]);
+                var confirmRespone = ConfirmPayment(returnToken[0].Value<string>(), authorizedClient);
                 
+                return contents;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
+        public static async Task<string> ConfirmPayment(string token, HttpClient authorizedClient)
+        {
+
+
+            authorizedClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            dynamic content = new JObject();
+
+            content.token = token;
+            content.otp = 262309;
+
+            HttpContent myContent = new StringContent(content.ToString(), Encoding.UTF8,
+                                    "application/json");
+            try
+            {
+                var response = await authorizedClient.PostAsync(new Uri(PaymixSDK.Paths.ResourceServerBaseAddress + "/v2/Members/Transfer/Merchant/Confirm"), myContent);
+                var contents = await response.Content.ReadAsStringAsync();
+
                 return contents;
             }
             catch (Exception ex)

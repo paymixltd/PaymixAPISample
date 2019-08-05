@@ -29,7 +29,7 @@ namespace AuthorizationCodeGrant.Controllers
                 Url.Action("Process", "Login",
                routeValues: null ,
                protocol: Request.Url.Scheme );
-            var userAuthorization = PaymixAuthService.GetClient().PrepareRequestUserAuthorization(scopes: new string[] { "USER_COMPLIANCE", "USER_FINANCIAL", "USER_REGISTRATION", "PUBLIC_DATA" }, returnTo: new Uri(callbackURL));
+            var userAuthorization = PaymixAuthService.GetClient().PrepareRequestUserAuthorization(scopes: new string[] { "USER_FINANCIAL",  "PUBLIC_DATA" }, returnTo: new Uri(callbackURL));
             userAuthorization.Send(HttpContext);
             Response.End();
             return View("~/Views/Home/Index.cshtml");
@@ -45,11 +45,11 @@ namespace AuthorizationCodeGrant.Controllers
                     var authorizationState = PaymixAuthService.GetClient().ProcessUserAuthorization(Request);
                     if (authorizationState != null)
                     {
-                        Session["neropay_access_token"] = authorizationState.AccessToken;
+                        Session["veloxxa_access_token"] = authorizationState.AccessToken;
                     }
             }
             // This example keeps it in the session. You don't have to
-            //Session["neropay_access_token"] = userAuthorization
+            //Session["veloxxa_access_token"] = userAuthorization
             return RedirectToAction("Index","Home");
         }
 

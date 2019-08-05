@@ -22,21 +22,19 @@ namespace AuthorizationCodeGrant.Controllers
         
         public  async Task<ActionResult> Send(string sendAmount)
         {
-            if (Session["neropay_access_token"] != null)
+            if (Session["veloxxa_access_token"] != null)
             {
                 var amount = Decimal.Parse(sendAmount).ToString("N2") ;
                 
                 // SAMPLE CALL THAT SENDS MONEY TO MERCHANT
-                var result = await Service.PaymixResourceService.SendFundsToMerchant("MER_PIM", amount, "EUR",
-                    Session["neropay_access_token"].ToString()
-                    , new HttpClient(PaymixAuthService.GetClient().CreateAuthorizingHandler(Session["neropay_access_token"].ToString())));
+                var result = await Service.PaymixResourceService.SendFundsToMerchant("MER_TEST", amount, "EUR",
+                    Session["veloxxa_access_token"].ToString()
+                    , new HttpClient(PaymixAuthService.GetClient().CreateAuthorizingHandler(Session["veloxxa_access_token"].ToString())));
 
                 var profileData = ((JArray)JObject.Parse(result)["responseBody"])[0];
-                ViewBag.Profile = profileData.ToObject<Profile>();
-                // Load Dashboard
-                /*;
-                ViewBag.ApiResponse = body;
-                */
+
+                
+
             }
 
             return View();

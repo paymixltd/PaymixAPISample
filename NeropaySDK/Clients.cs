@@ -10,11 +10,10 @@ namespace PaymixSDK
     {
         public readonly static Client Client1 = new Client
         {
-            Id = "client",
-            Secret = "client",
+            Id = "coinygram",
+            Secret = "coinygram",
             RedirectUrl = Paths.AuthorizeCodeCallBackPath
         };
-
         
     }
 
